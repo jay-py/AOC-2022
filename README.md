@@ -1,1 +1,1 @@
-This year I choose Rust!
+This year I choose Kotlin!

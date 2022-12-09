@@ -6,13 +6,13 @@ fun main() {
     part2(readInput(true))
 }
 
-fun readInput(test: Boolean = false) : String {
+private fun readInput(test: Boolean = false) : String {
     val fileName = if(test) "test.txt" else "input.txt"
     val inputStream: InputStream = File(fileName).inputStream()
     return inputStream.bufferedReader().use { it.readText() }
 }
 
-fun part1(input: String) {
+private fun part1(input: String) {
     val res = input.split("\n\n")
                 .map {
                     it.split("\n")
@@ -28,7 +28,7 @@ fun part1(input: String) {
     println(">> part1: " + res)
 }
 
-fun part2(input: String) {
+private fun part2(input: String) {
     val res = input.split("\n\n")
                 .map {
                     it.split("\n")

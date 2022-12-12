@@ -1,11 +1,9 @@
 import java.io.File
 import java.io.InputStream
-import java.util.Dictionary
 
 fun main() {
-    
-    part1(readInput(true))
-    part2(readInput(false))
+    part1(readInput())
+    part2(readInput())
 }
 
 private fun readInput(test: Boolean = false) : String {

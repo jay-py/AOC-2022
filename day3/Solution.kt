@@ -14,11 +14,10 @@ private fun readInput(test: Boolean = false) : String {
 
 private fun part1(input: String) {
     val res = input.split("\n")
-                    .filter { !it.isBlank() }
-                    .map { Pair(it.take(it.length / 2), it.drop(it.length / 2)) }
-                    .map { priorities().mapNotNull { (c, i) -> 
-                        if (c in it.first && c in it.second) i 
-                        else { null }}[0] }
+                    .filterNot { it.isBlank() }
+                    .map { listOf(it.take(it.length / 2), it.drop(it.length / 2)) }
+                    .map { priorities().first { (c, _) -> 
+                        it.all { c in it }}.second }
                     .sum()
     println(">> part1: " + res)
 }
@@ -27,22 +26,18 @@ private fun part2(input: String) {
     val res = "([a-z, A-Z]+\n){3}".toRegex()
                     .findAll(input)
                     .map { it.groupValues.joinToString() }
-                    .map { it.split("\n").filter { !it.isBlank() }.dropLast(1) }
-                    .map { it.toList() }
-                    .map { priorities().mapNotNull { (c, i) -> 
-                        if (it.all { c in it }) i 
-                        else { null }}[0] }
+                    .map { it.split("\n").filterNot { it.isBlank() }.dropLast(1).toList() }
+                    .map { priorities().first { (c, _) -> 
+                        it.all { c in it }}.second }
                     .sum()
     println(">> part2: " + res)
 }
 
 private fun priorities() : List<Pair<Char, Int>> {
     var res = ArrayList<Pair<Char, Int>>()
-    for ((i,c) in ('a'..'z').withIndex()) {
-        res.add(Pair(c, i + 1))
-    }
-    for ((i,c) in ('A'..'Z').withIndex()) {
-        res.add(Pair(c, i + 27))
+    val range = (('a'..'z').toMutableList().apply { addAll('A'..'Z') })
+    for ((index, char) in range.withIndex()) {
+        res.add(Pair(char, index + 1))
     }
     return res
 }

@@ -36,12 +36,10 @@ private fun part2(input: String) {
     println(">> part2: " + res)
 }
 
-private fun isFullyOverlaping(range1: IntRange, range2: IntRange) : Boolean {
-    return if(range1.intersect(range2) == range1.toSet()) true
-    else (range2.intersect(range1) == range2.toSet())
+private fun isFullyOverlaping(a: IntRange, b: IntRange) : Boolean {
+    return a.intersect(b) in listOf(a.toSet(), b.toSet())
 }
 
-private fun isPartiallyOverlaping(range1: IntRange, range2: IntRange) : Boolean {
-    return if (range1.intersect(range2).size > 0) true
-    else (range2.intersect(range1).size > 0)
+private fun isPartiallyOverlaping(a: IntRange, b: IntRange) : Boolean {
+    return a.intersect(b).size > 0
 }

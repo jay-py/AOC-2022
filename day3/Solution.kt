@@ -35,13 +35,3 @@ private fun valueFor(char: Char): Int {
     return char.code - if (char.isLowerCase()) 96
     else 38
 }
-
-/*
->> part1: 8109
->> part2: 2738
-
-
->> part1: 157
->> part2: 70
-
-*/

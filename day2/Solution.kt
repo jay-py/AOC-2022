@@ -14,7 +14,7 @@ private fun readInput(test: Boolean = false) : String {
 
 private fun part1(input: String) {
     val res = input.split("\n")
-                    .filter { !it.isBlank() }
+                    .filterNot { it.isBlank() }
                     .map { it.split(" ") }
                     .map { Pair(Shape.decode(it[0]), Shape.decode(it[1]))}    
                     .map { Shape.score(it.first, it.second) }
@@ -24,7 +24,7 @@ private fun part1(input: String) {
 
 private fun part2(input: String) {
     val res = input.split("\n")
-                    .filter { !it.isBlank() }
+                    .filterNot { it.isBlank() }
                     .map { it.split(" ") }
                     .map { Pair(Shape.decode(it[0]), Move.decode(it[1]))}    
                     .map { Shape.score(it.first, Shape.forMove(it.first, it.second)) }

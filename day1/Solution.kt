@@ -16,7 +16,7 @@ private fun part1(input: String) {
     val res = input.split("\n\n")
                     .map {
                         it.split("\n")
-                            .filter { !it.isBlank() }    
+                            .filterNot { it.isBlank() }    
                             .map { it.toInt() }
                             .sum()    
                     }
@@ -28,7 +28,7 @@ private fun part2(input: String) {
     val res = input.split("\n\n")
                     .map {
                         it.split("\n")
-                            .filter { !it.isBlank() }    
+                            .filterNot { it.isBlank() }    
                             .map { it.toInt() }
                             .sum()    
                     }

@@ -3,7 +3,7 @@ import java.io.InputStream
 import java.util.ArrayDeque
 
 fun main() {
-    part1(readInput())
+    part1(readInput(true))
     //part2(readInput())
 }
 
@@ -14,15 +14,13 @@ private fun readInput(test: Boolean = false) : String {
 }
 
 private fun part1(input: String) {
-    val stacks = getInitialStack(input)
-    val moves = getMoves(input)
-    for (move in moves) {
-        val amount = move[0]
-        val from = move[1] - 1
-        val to = move[2] - 1
-        (0..amount-1).forEach {
-            val s = stacks[from].pop()
-            stacks[to].push(s)
+    val (stacks, moves) = stacksAndMoves(input)
+    moves.forEach {
+        val amount = it[0]
+        val from = it[1] - 1
+        val to = it[2] - 1
+        repeat(amount) {
+            stacks[to].push( stacks[from].pop() )
         }
     }
     stacks.forEach{print(it.peek())}
@@ -33,38 +31,46 @@ private fun part2(input: String) {
     println(">> part2: " + res)
 }
 
-private fun getInitialStack(input: String) : MutableList<ArrayDeque<String>> {
-    val reg = "(\\s{3})?(\\[\\S\\])?\\s{0,1}".toRegex()
-    val lines = input.split("\n").filterNot { !it.contains("[") || it.contains("move") || it.isBlank()}
-                    .map { 
-                      reg.findAll(it).map { it.value }
+private fun stacksAndMoves(input: String) : Pair<MutableList<ArrayDeque<String>>, List<List<Int>>> {
+    // parse initial stacks
+    val stackReg = "(\\s{3})?(\\[\\S\\])?\\s{0,1}".toRegex()
+    val stackLines = input.split("\n")
+                    .filterNot { "move" in it }
+                    .dropLast(2)
+                    .map {
+                        stackReg.findAll(it)
+                        .map { it.value }
                      }
-    
-    val rows = lines.map {
-        it.toList().dropLast(1)
-     }
+                     .map {
+                        it.toList()
+                        .dropLast(1)
+                     }
 
-    val x  = rows.size-1
+    val columnsCount = stackLines.size - 1
+    val rowsCount = stackLines.first().size - 1
     val stacks = mutableListOf<ArrayDeque<String>>()
-    for (i in 0..rows[0].size-1) {
-        var l = ArrayDeque<String>()
-        for (j in 0..rows.size-1) {
-            val m = rows[x-j][i].replace("[","").replace("]","").trim()
-            if (!m.isBlank()) {
-                l.push(m)
+
+    for (row in 0..rowsCount) {
+        var stack = ArrayDeque<String>()
+        for (column in 0..columnsCount) {
+            val selection = stackLines[columnsCount - column][row]
+            if (Regex("\\[[A-Z]\\]").matches(selection.trim())) {
+                stack.push (
+                    selection
+                        .filterNot { (it in listOf('[', ']', ' ')) })
             }
         }
-        stacks.add(l)
+        stacks.add(stack)
     }
-    return stacks
-}
+    // parse moves
+    val movesLines = input.split("\n").filter {"move" in it}
+    val moves = mutableListOf<List<Int>>()
 
-private fun getMoves(input: String) : List<List<Int>> {
-    val res = input.split("\n").filter {"move" in it}
-    val li = mutableListOf<List<Int>>()
-
-    for (r in res) {
-        li.add(r.split(" ").filterNot{ it in listOf("move", "from", "to")}.map{it.toInt()}  )//toCharArray().filter { it.isDigit() }.map {it.digitToInt()} )
+    for (line in movesLines) {
+        moves.add(line.split(" ")
+                .filterNot { it in listOf("move", "from", "to")}
+                .map{ it.toInt() })
     }
-    return li
+    // result
+    return Pair(stacks, moves)
 }

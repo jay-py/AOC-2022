@@ -3,8 +3,8 @@ import java.io.InputStream
 import java.util.ArrayDeque
 
 fun main() {
-    part1(readInput(true))
-    //part2(readInput())
+    part1(readInput())
+    part2(readInput())
 }
 
 private fun readInput(test: Boolean = false) : String {
@@ -23,11 +23,26 @@ private fun part1(input: String) {
             stacks[to].push( stacks[from].pop() )
         }
     }
-    stacks.forEach{print(it.peek())}
+    val res = stacks.map { it.peek() }.joinToString("")
+    println(">> part1: " + res)
+
 }
 
 private fun part2(input: String) {
-    val res = input
+    val (stacks, moves) = stacksAndMoves(input)
+    moves.forEach {
+        val amount = it[0]
+        val from = it[1] - 1
+        val to = it[2] - 1
+        var stack = ArrayDeque<String>()
+        repeat(amount) {
+            stack.push( stacks[from].pop() )
+        }
+        repeat(amount) {
+            stacks[to].push( stack.pop() )
+        }
+    }
+    val res = stacks.map { it.peek() }.joinToString("")
     println(">> part2: " + res)
 }
 
@@ -54,7 +69,7 @@ private fun stacksAndMoves(input: String) : Pair<MutableList<ArrayDeque<String>>
         var stack = ArrayDeque<String>()
         for (column in 0..columnsCount) {
             val selection = stackLines[columnsCount - column][row]
-            if (Regex("\\[[A-Z]\\]").matches(selection.trim())) {
+            if (Regex("\\[\\S\\]").matches(selection.trim())) {
                 stack.push (
                     selection
                         .filterNot { (it in listOf('[', ']', ' ')) })
@@ -68,7 +83,7 @@ private fun stacksAndMoves(input: String) : Pair<MutableList<ArrayDeque<String>>
 
     for (line in movesLines) {
         moves.add(line.split(" ")
-                .filterNot { it in listOf("move", "from", "to")}
+                .filterNot { it in listOf("move", "from", "to") }
                 .map{ it.toInt() })
     }
     // result

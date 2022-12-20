@@ -84,7 +84,7 @@ private fun stacksAndMoves(input: String) : Pair<MutableList<ArrayDeque<String>>
     for (line in movesLines) {
         moves.add(line.split(" ")
                 .filterNot { it in listOf("move", "from", "to") }
-                .map{ it.toInt() })
+                .map { it.toInt() })
     }
     // result
     return Pair(stacks, moves)

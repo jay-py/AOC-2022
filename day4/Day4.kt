@@ -33,12 +33,14 @@ class Day4() {
                         .size
         println(">> part2: " + res)
     }
-    
-    private fun isFullyOverlaping(a: IntRange, b: IntRange) : Boolean {
-        return a.intersect(b) in listOf(a.toSet(), b.toSet())
-    }
-    
-    private fun isPartiallyOverlaping(a: IntRange, b: IntRange) : Boolean {
-        return a.intersect(b).size > 0
+
+    companion object {
+        private fun isFullyOverlaping(a: IntRange, b: IntRange) : Boolean {
+            return a.intersect(b) in listOf(a.toSet(), b.toSet())
+        }
+        
+        private fun isPartiallyOverlaping(a: IntRange, b: IntRange) : Boolean {
+            return a.intersect(b).size > 0
+        }    
     }
 }

@@ -29,8 +29,10 @@ class Day3() {
         println(">> part2: " + res)
     }
     
-    private fun valueFor(char: Char): Int {
-        return char.code - if (char.isLowerCase()) 96
-        else 38
+    companion object {
+        private fun valueFor(char: Char): Int {
+            return char.code - if (char.isLowerCase()) 96
+            else 38
+        }    
     }
 }

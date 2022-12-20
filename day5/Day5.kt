@@ -45,48 +45,49 @@ class Day5() {
         println(">> part2: " + res)
     }
     
-    private fun stacksAndMoves(input: String) : Pair<MutableList<ArrayDeque<String>>, List<List<Int>>> {
-        // parse initial stacks
-        val stackReg = "(\\s{3})?(\\[\\S\\])?\\s{0,1}".toRegex()
-        val stackLines = input.split("\n")
-                        .filterNot { "move" in it }
-                        .dropLast(2)
-                        .map {
-                            stackReg.findAll(it)
-                            .map { it.value }
-                         }
-                         .map {
-                            it.toList()
-                            .dropLast(1)
-                         }
-    
-        val columnsCount = stackLines.size - 1
-        val rowsCount = stackLines.first().size - 1
-        val stacks = mutableListOf<ArrayDeque<String>>()
-    
-        for (row in 0..rowsCount) {
-            var stack = ArrayDeque<String>()
-            for (column in 0..columnsCount) {
-                val selection = stackLines[columnsCount - column][row]
-                if (Regex("\\[\\S\\]").matches(selection.trim())) {
-                    stack.push (
-                        selection
-                            .filterNot { (it in listOf('[', ']', ' ')) })
+    companion object {
+        private fun stacksAndMoves(input: String) : Pair<MutableList<ArrayDeque<String>>, List<List<Int>>> {
+            // parse initial stacks
+            val stackReg = "(\\s{3})?(\\[\\S\\])?\\s{0,1}".toRegex()
+            val stackLines = input.split("\n")
+                            .filterNot { "move" in it }
+                            .dropLast(2)
+                            .map {
+                                stackReg.findAll(it)
+                                .map { it.value }
+                             }
+                             .map {
+                                it.toList()
+                                .dropLast(1)
+                             }
+        
+            val columnsCount = stackLines.size - 1
+            val rowsCount = stackLines.first().size - 1
+            val stacks = mutableListOf<ArrayDeque<String>>()
+        
+            for (row in 0..rowsCount) {
+                var stack = ArrayDeque<String>()
+                for (column in 0..columnsCount) {
+                    val selection = stackLines[columnsCount - column][row]
+                    if (Regex("\\[\\S\\]").matches(selection.trim())) {
+                        stack.push (
+                            selection
+                                .filterNot { (it in listOf('[', ']', ' ')) })
+                    }
                 }
+                stacks.add(stack)
             }
-            stacks.add(stack)
-        }
-        // parse moves
-        val movesLines = input.split("\n").filter { "move" in it }
-        val moves = mutableListOf<List<Int>>()
-    
-        for (line in movesLines) {
-            moves.add(line.split(" ")
-                    .filterNot { it in listOf("move", "from", "to") }
-                    .map { it.toInt() })
-        }
-        // result
-        return Pair(stacks, moves)
+            // parse moves
+            val movesLines = input.split("\n").filter { "move" in it }
+            val moves = mutableListOf<List<Int>>()
+        
+            for (line in movesLines) {
+                moves.add(line.split(" ")
+                        .filterNot { it in listOf("move", "from", "to") }
+                        .map { it.toInt() })
+            }
+            // result
+            return Pair(stacks, moves)
+        }    
     }
-
 }

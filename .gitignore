@@ -2,8 +2,8 @@
 
 !.gitignore
 !*.kt
-!*.txt
 !*.md
+!*.sh
 
 !Input
 !Solutions

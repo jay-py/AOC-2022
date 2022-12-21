@@ -10,7 +10,7 @@ enum class Day(val value: String) {
 
 object Reader {
     fun getInput(day: Day, test: Boolean = false) : String {
-        val fileName = day.value + if(test) "/test.txt" else "/input.txt"
+        val fileName = "Input/" + day.value + if(test) "/test.txt" else "/input.txt"
         val inputStream: InputStream = File(fileName).inputStream()
         return inputStream.bufferedReader().use { it.readText() }
     }
